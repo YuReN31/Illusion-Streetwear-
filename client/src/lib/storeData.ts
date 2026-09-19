@@ -1,16 +1,34 @@
 /* Concrete Editorial: dados locais de demonstração para uma loja de roupa urbana; estrutura pronta para trocar por API no futuro. */
 export type Product = {
+  id?: string;
   slug: string;
   name: string;
+  namePt?: string;
+  nameEn?: string;
   category: string;
+  categorySlug?: string;
   price: number;
+  promoPrice?: number | null;
+  currency?: string;
   color: string;
   sizes: string[];
   description: string;
+  descriptionPt?: string;
+  descriptionEn?: string;
   image: string;
   alt: string;
+  altPt?: string;
+  altEn?: string;
   badge?: string;
   material: string;
+  materialPt?: string;
+  materialEn?: string;
+  collection?: string;
+  isSoldOut?: boolean;
+  totalStock?: number;
+  isFeatured?: boolean;
+  isNewDrop?: boolean;
+  isPromo?: boolean;
 };
 
 export const products: Product[] = [
@@ -94,3 +112,36 @@ export const categories = ["All pieces", "Outerwear", "T-Shirts", "Sweats", "Tro
 
 export const formatPrice = (value: number) =>
   new Intl.NumberFormat("pt-PT", { style: "currency", currency: "MZN", maximumFractionDigits: 0 }).format(value).replace("MZN", "MT");
+
+export async function fetchProducts(query?: { category?: string; search?: string; sort?: string }): Promise<Product[]> {
+  try {
+    const params = new URLSearchParams();
+    if (query?.category && query.category !== "All pieces" && query.category !== "all") {
+      params.set("category", query.category);
+    }
+    if (query?.search) params.set("search", query.search);
+    if (query?.sort) params.set("sort", query.sort);
+
+    const res = await fetch(`/api/products?${params.toString()}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) return data;
+    }
+  } catch (err) {
+    console.warn("API product fetch failed, fallback to local dataset", err);
+  }
+  return products;
+}
+
+export async function fetchProductBySlug(slug: string): Promise<Product | null> {
+  try {
+    const res = await fetch(`/api/products/${slug}`);
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err) {
+    console.warn("API single product fetch failed", err);
+  }
+  return products.find((p) => p.slug === slug) || null;
+}
+

@@ -1,9 +1,9 @@
 /* Concrete Editorial: homepage como lookbook comprável; hero cinematográfico, blocos assimétricos, rails horizontais e microinterações rápidas. */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowDown, ArrowUpRight, Play, Plus } from "lucide-react";
 import { Link } from "wouter";
 import { CartDrawer, Footer, Header, Marquee, ProductCard, SectionLabel, TextLink, BackToTop } from "@/components/StorefrontShell";
-import { products } from "@/lib/storeData";
+import { products, fetchProducts, type Product } from "@/lib/storeData";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const heroImage = "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1600&q=85";
@@ -16,6 +16,13 @@ export default function Home() {
   const pt = locale === "pt";
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [productList, setProductList] = useState<Product[]>(products);
+
+  useEffect(() => {
+    fetchProducts().then((res) => {
+      if (res && res.length > 0) setProductList(res);
+    });
+  }, []);
   return (
     <div className="storefront-page">
       <Header />
@@ -47,7 +54,7 @@ export default function Home() {
 
         <section className="arrivals-section page-pad" id="new-arrivals">
           <div className="section-heading-row"><div><SectionLabel index="02">{pt ? "Acabaram de chegar" : "Just landed"}</SectionLabel><h2>{pt ? <>Novas <i>chegadas.</i></> : <>New <i>arrivals.</i></>}</h2></div><Link href="/shop" className="outline-button">{pt ? "Ver todas as peças" : "View all pieces"} <ArrowUpRight size={16} /></Link></div>
-          <div className="product-rail">{products.slice(0, 4).map((product, index) => <ProductCard product={product} index={index} key={product.slug} />)}</div>
+          <div className="product-rail">{productList.slice(0, 4).map((product, index) => <ProductCard product={product} index={index} key={product.slug} />)}</div>
         </section>
 
         <section className="editorial-section">
