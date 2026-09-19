@@ -1,0 +1,6 @@
+{
+  "name": "Illusion Streetwear",
+  "description": "Concrete Editorial e-commerce storefront for Illusion Streetwear featuring product catalogs, story, and cart experience.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

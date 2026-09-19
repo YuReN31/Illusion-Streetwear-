@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 90" width="400" height="90">
+  <style>
+    .brand-text {
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      font-weight: 700;
+      font-size: 42px;
+      letter-spacing: 0.28em;
+      fill: #ffffff;
+      text-transform: uppercase;
+    }
+    .sub-text {
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.55em;
+      fill: #a3a3a3;
+      text-transform: uppercase;
+    }
+  </style>
+  <text x="200" y="48" text-anchor="middle" class="brand-text">ILLUSION</text>
+  <text x="204" y="74" text-anchor="middle" class="sub-text">STREETWEAR</text>
+</svg>
